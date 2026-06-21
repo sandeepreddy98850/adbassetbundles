@@ -1,0 +1,41 @@
+# This is a Databricks asset bundle definition for Bundle_practice.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: Bundle_practice
+  uuid: 1da036b3-168e-499c-8746-0ff6a9f8ff75
+
+include:
+  - resources/*.yml
+
+# Variable declarations. These variables are assigned in the dev/prod targets below.
+variables:
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-5162cc57-1978.cloud.databricks.com
+    variables:
+      catalog: dev_bundle_practice
+      schema: ${workspace.current_user.short_name}
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-5162cc57-1978.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/psandeep.td@gmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/psandeep.td@gmail.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: dev_bundle_practice
+      schema: prod
+    permissions:
+      - user_name: psandeep.td@gmail.com
+        level: CAN_MANAGE
