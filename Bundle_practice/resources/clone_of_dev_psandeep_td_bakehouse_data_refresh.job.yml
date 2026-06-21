@@ -1,0 +1,48 @@
+resources:
+  jobs:
+    clone_of_dev_psandeep_td_bakehouse_data_refresh:
+      name: Clone of [dev psandeep_td] Bakehouse_data_refresh
+      tasks:
+        - task_key: customer_360
+          disabled: false
+          email_notifications: {}
+          notebook_task:
+            notebook_path: ../src/clone_of_dev_psandeep_td_bakehouse_data_refresh/feature1/Bundle_practice/src/customer_360.ipynb
+            source: WORKSPACE
+          run_if: ALL_SUCCESS
+          timeout_seconds: 0
+          webhook_notifications: {}
+        - task_key: transaction_refresh
+          depends_on:
+            - task_key: customer_360
+          disabled: false
+          email_notifications: {}
+          notebook_task:
+            notebook_path: ../src/clone_of_dev_psandeep_td_bakehouse_data_refresh/feature3/Bundle_practice/src/transactions_summery.ipynb
+            source: WORKSPACE
+          run_if: ALL_SUCCESS
+          timeout_seconds: 0
+      parameters:
+        - name: catalog
+          default: dev_bundle_practice
+        - name: schema
+          default: psandeep_td
+      email_notifications:
+        no_alert_for_skipped_runs: false
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+      max_concurrent_runs: 4
+      performance_target: PERFORMANCE_OPTIMIZED
+      queue:
+        enabled: true
+      tags:
+        "dev": "psandeep_td"
+      timeout_seconds: 0
+      trigger:
+        pause_status: PAUSED
+        periodic:
+          interval: 1
+          unit: DAYS
+      webhook_notifications: {}
