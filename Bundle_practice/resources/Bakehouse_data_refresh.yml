@@ -24,13 +24,13 @@ resources:
       tasks:
         - task_key: customer_360
           notebook_task:
-            notebook_path: ../src/customer_360
+            notebook_path: ../src/customer_360.py
 
         - task_key: transaction_refresh
           depends_on:
             - task_key: customer_360
           notebook_task:
-            notebook_path: ../src/transactions_summery 
+            notebook_path: ../src/transactions_summery.py
 
       environments:
         - environment_key: default
