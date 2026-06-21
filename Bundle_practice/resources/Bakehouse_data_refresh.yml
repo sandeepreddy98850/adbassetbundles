@@ -22,9 +22,15 @@ resources:
           default: ${var.schema}
 
       tasks:
-        - task_key: notebook_task
+        - task_key: customer_360
           notebook_task:
-            notebook_path: ../src/customer_360.ipynb
+            notebook_path: ../src/customer_360
+
+        - task_key: transaction_refresh
+          depends_on:
+            - task_key: customer_360
+          notebook_task:
+            notebook_path: ../src/transactions_summery 
 
       environments:
         - environment_key: default
